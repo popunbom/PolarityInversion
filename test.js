@@ -1,6 +1,8 @@
 var audioCtx = new AudioContext();
 var buffer = null;
-var source = audioCtx.createBufferSource();
+// var source = audioCtx.createBufferSource();
+var source = null;
+var dest = null;
 var effectIn  = audioCtx.createChannelSplitter(2);
 var effectOut = audioCtx.createChannelMerger(2);
 var request = new XMLHttpRequest();
@@ -11,21 +13,20 @@ var inverted = null;
 window.onload = init;
 
 function init() {
-	
-	document.getElementById("pBtn").onclick = function(){
-		let btn = document.getElementById("pBtn");
-		if (isPaused){
-			audioCtx.resume();
-			btn.value = "Pause";
-		} else {
-			audioCtx.suspend();
-			btn.value = "Play";
-		}
-		isPaused = !isPaused
-	}
-	document.getElementById("aBtn").onclick = function(){
+	source = audioCtx.createMediaElementSource(document.querySelector('video'));
 
-		
+	// document.getElementById("pBtn").onclick = function(){
+	// 	let btn = document.getElementById("pBtn");
+	// 	if (isPaused){
+	// 		audioCtx.resume();
+	// 		btn.value = "Pause";
+	// 	} else {
+	// 		audioCtx.suspend();
+	// 		btn.value = "Play";
+	// 	}
+	// 	isPaused = !isPaused
+	// }
+	document.getElementById("aBtn").onclick = function(){
 		let btn = document.getElementById("aBtn");
 		if (isInverted){
 			btn.value = "Enable";
@@ -44,9 +45,9 @@ function init() {
 		}
 		isInverted = !isInverted
 	}
-	request.open('GET', './xxx.m4a', true);
-	request.responseType = 'arraybuffer';
-	request.send();
+	// request.open('GET', './xxx.m4a', true);
+	// request.responseType = 'arraybuffer';
+	// request.send();
 
 	createPolarityInvertEffect(-1.0);
 	source.connect(audioCtx.destination);
